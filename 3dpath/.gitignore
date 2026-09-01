@@ -12,6 +12,11 @@ dist
 dist-ssr
 3dPath.html
 *.local
+__pycache__/
+*.pyc
+packaging/pyi-dist/
+packaging/pyi-build/
+release/
 
 # Editor directories and files
 .vscode/*
