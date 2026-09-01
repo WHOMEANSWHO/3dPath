@@ -1,0 +1,229 @@
+@import "tailwindcss";
+@import "@fontsource-variable/big-shoulders-stencil-display";
+@import "@fontsource-variable/instrument-sans";
+@import "@fontsource-variable/spline-sans-mono";
+
+@theme {
+  /* Night workshop */
+  --color-night: #0c0e12;
+  --color-panel: #14141a;
+  --color-panel2: #1a1a22;
+  --color-well: #0f1015;
+  --color-line: #292732;
+  --color-line2: #3a3746;
+  --color-paper: #eae5da;
+  --color-muted: #9a938b;
+  --color-faint: #6b645c;
+
+  --color-amber: #e4a54a;
+  --color-amber2: #f0bc6e;
+  --color-amberdim: #453516;
+
+  --color-teal: #2f8f86;
+  --color-teal2: #5ab4a9;
+  --color-tealdim: #14302b;
+
+  --color-rust: #a8452c;
+  --color-rust2: #d3775c;
+  --color-rustdim: #371b12;
+
+  --font-display: "Big Shoulders Stencil Display Variable", "Arial Narrow", sans-serif;
+  --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono Variable", ui-monospace, monospace;
+
+  /* Layout switch: portrait stack below, desktop workspace above */
+  --breakpoint-desk: 1200px;
+  --breakpoint-wide: 2200px;
+}
+
+html {
+  background: var(--color-night);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  scrollbar-color: var(--color-line2) var(--color-night);
+}
+
+/* Portrait monitor: larger base type (16–18px band, ~44px targets) */
+@media (max-width: 1199px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* Fixed map-grid + grain behind everything */
+.shop-texture {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(234, 229, 218, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(234, 229, 218, 0.028) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.shop-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Job-card panel */
+.card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: 6px;
+}
+
+/* File-type / key stamps */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--color-line2);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.35rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+kbd.key {
+  display: inline-block;
+  padding: 0 0.42rem;
+  border: 1px solid var(--color-line2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--color-well);
+  color: var(--color-amber2);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.35rem;
+}
+
+/* Spray-stencil verdict */
+.spray {
+  display: inline-block;
+  transform: rotate(-1.6deg);
+  padding: 0.15rem 0.7rem 0.25rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.09em;
+  opacity: 0.92;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.11' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.72 0.28'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23r)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.11' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.72 0.28'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23r)'/%3E%3C/svg%3E");
+}
+
+/* Guide prose */
+.guide h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  margin: 1.6rem 0 0.6rem;
+}
+.guide ol {
+  counter-reset: step;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.guide ol li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2.1rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.65;
+  color: var(--color-paper);
+}
+.guide ol li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.12rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-line2);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  background: var(--color-well);
+}
+
+/* Checklist tick */
+.tick {
+  appearance: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.14rem;
+  cursor: pointer;
+  border: 1px solid var(--color-line2);
+  background-color: var(--color-well);
+  border-radius: 3px;
+}
+.tick:checked {
+  border-color: var(--color-teal);
+  background-color: var(--color-teal);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5' stroke='%230c0e12' stroke-width='2.2' fill='none'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Floating mini-player (portrait, after scroll) */
+.player-dock {
+  position: absolute;
+  inset: 0;
+}
+.player-dock.floating {
+  position: fixed;
+  inset: auto;
+  top: 4.2rem;
+  right: 1rem;
+  width: 300px;
+  aspect-ratio: 16 / 9;
+  z-index: 40;
+  border: 1px solid var(--color-line2);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+}
+
+::selection {
+  background: var(--color-amberdim);
+  color: var(--color-amber2);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
