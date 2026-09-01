@@ -169,6 +169,16 @@ kbd.key {
   color: var(--color-muted);
   background: var(--color-well);
 }
+.guide ol li.is-playing::before {
+  border-color: color-mix(in oklab, var(--color-amber) 70%, var(--color-line2));
+  color: var(--color-amber2);
+  background: var(--color-amberdim);
+}
+.guide ol li button {
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
 
 /* Checklist tick */
 .tick {

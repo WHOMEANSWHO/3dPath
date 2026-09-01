@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import type { PacePack } from "../data/pace";
+import type { Pace, PacePack } from "../data/pace";
 import { setVideoId } from "../lib/store";
-import { embedUrl, extractYouTubeId, formatStart, isFileProtocol, watchUrl } from "../lib/youtube";
+import {
+  embedUrl,
+  extractYouTubeId,
+  formatStart,
+  isFileProtocol,
+  playbackRateForPace,
+  postPlaybackRate,
+  watchUrl,
+} from "../lib/youtube";
 
 interface Props {
   lessonId: number;
@@ -9,13 +17,17 @@ interface Props {
   override: string;
   activeClip: number | null;
   allowFloat: boolean;
+  pace: Pace;
+  /** Bumped on each step/clip click so the same timestamp can be jumped again. */
+  seekGen?: number;
 }
 
-export default function Player({ lessonId, pack, override, activeClip, allowFloat }: Props) {
+export default function Player({ lessonId, pack, override, activeClip, allowFloat, pace, seekGen = 0 }: Props) {
   const [link, setLink] = useState("");
   const [linkError, setLinkError] = useState(false);
   const [floating, setFloating] = useState(false);
   const anchor = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const clip = activeClip !== null ? pack.clips[activeClip] : undefined;
   const start = clip ? clip.start : 0;
@@ -23,6 +35,7 @@ export default function Player({ lessonId, pack, override, activeClip, allowFloa
   const videoId = clip?.videoId || packDefault;
   const fromDisk = isFileProtocol();
   const onYouTube = videoId ? watchUrl(videoId, start) : "";
+  const rate = playbackRateForPace(pace);
 
   useEffect(() => {
     if (!allowFloat || !videoId || fromDisk) {
@@ -39,6 +52,20 @@ export default function Player({ lessonId, pack, override, activeClip, allowFloa
     return () => io.disconnect();
   }, [allowFloat, videoId, fromDisk]);
 
+  useEffect(() => {
+    if (!videoId || fromDisk) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    const ping = () => postPlaybackRate(iframe, rate);
+    ping();
+    const t1 = window.setTimeout(ping, 600);
+    const t2 = window.setTimeout(ping, 1800);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [videoId, start, seekGen, rate, fromDisk, activeClip]);
+
   const addLink = () => {
     const id = extractYouTubeId(link);
     if (!id) {
@@ -51,7 +78,7 @@ export default function Player({ lessonId, pack, override, activeClip, allowFloa
   };
 
   return (
-    <div ref={anchor} className="relative aspect-video w-full">
+    <div ref={anchor} id="lesson-player" className="relative aspect-video w-full">
       <div className={`player-dock ${floating ? "floating" : ""}`}>
         {videoId && fromDisk ? (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-[6px] border border-dashed border-line2 bg-well/70 px-6 text-center">
@@ -72,14 +99,22 @@ export default function Player({ lessonId, pack, override, activeClip, allowFloa
         ) : videoId ? (
           <div className="relative h-full w-full">
             <iframe
-              key={`${videoId}-${activeClip ?? "x"}-${start}`}
+              ref={iframeRef}
+              key={`${videoId}-${activeClip ?? "x"}-${start}-${seekGen}`}
               src={embedUrl(videoId, start, activeClip !== null)}
               title={clip ? clip.label.replace(/\[\[|\]\]/g, "") : pack.videoNote}
               referrerPolicy="strict-origin-when-cross-origin"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              onLoad={() => {
+                const el = iframeRef.current;
+                if (el) postPlaybackRate(el, rate);
+              }}
               className="h-full w-full rounded-[6px] border border-line bg-black"
             />
+            <span className="absolute bottom-2 left-2 rounded-[4px] bg-night/80 px-2 py-1 font-mono text-[0.66rem] text-amber2">
+              {pace === "slow" ? "0.75×" : "1×"}
+            </span>
             <a
               href={onYouTube}
               target="_blank"
@@ -92,7 +127,7 @@ export default function Player({ lessonId, pack, override, activeClip, allowFloa
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-[6px] border border-dashed border-line2 bg-well/70 px-6 text-center">
             <p className="display text-xl font-semibold text-paper">
-              Watch at 0.75&times;. Pause and copy every step.
+              {pace === "slow" ? "Slow starts at 0.75×. Pause and copy every step." : "Fast at 1×. Pause and copy every step."}
             </p>
             <p className="max-w-[42ch] text-[0.84rem] leading-relaxed text-muted">{pack.videoNote}</p>
             <div className="mt-1 flex w-full max-w-sm gap-2">

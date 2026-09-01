@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import ActionBar from "../components/ActionBar";
 import CheckItems from "../components/CheckItems";
 import ClipList from "../components/ClipList";
+import StepList from "../components/StepList";
 import Marked from "../components/Marked";
 import NotesBox from "../components/NotesBox";
 import Player from "../components/Player";
@@ -11,7 +12,7 @@ import DocsList from "../components/DocsList";
 import TipsList from "../components/TipsList";
 import PaceToggle from "../components/PaceToggle";
 import { getClass, getLesson, topicOfLesson, topicPath } from "../data/catalogue";
-import { packFor } from "../data/pace";
+import { clipIndexForStep, packFor } from "../data/pace";
 import { verdictOf } from "../lib/progress";
 import { recordOf, saveNotes, setLastClip, touchLesson, useAppState } from "../lib/store";
 
@@ -22,8 +23,10 @@ export default function LessonPage() {
   const lesson = getLesson(lessonId);
   const rec = recordOf(state, lessonId);
   const [notesDraft, setNotesDraft] = useState(rec.notes);
+  const [seekGen, setSeekGen] = useState(0);
 
   useEffect(() => {
+    setSeekGen(0);
     if (lesson) touchLesson(lesson.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lesson?.id]);
@@ -122,10 +125,19 @@ export default function LessonPage() {
             override={override}
             activeClip={activeClip}
             allowFloat
+            pace={state.pace}
+            seekGen={seekGen}
           />
           <div className="mt-4">
             {pack.clips.length > 0 ? (
-              <ClipList clips={pack.clips} activeClip={activeClip} onSelect={(i) => setLastClip(lesson.id, i)} />
+              <ClipList
+                clips={pack.clips}
+                activeClip={activeClip}
+                onSelect={(i) => {
+                  setLastClip(lesson.id, i);
+                  setSeekGen((n) => n + 1);
+                }}
+              />
             ) : null}
             <p className="mt-2.5 font-mono text-[0.7rem] text-faint">{pack.videoNote}</p>
           </div>
@@ -142,13 +154,20 @@ export default function LessonPage() {
                 </p>
               </div>
               <h3>Steps</h3>
-              <ol>
-                {lesson.steps.map((s, i) => (
-                  <li key={i} className="text-[0.9rem]">
-                    <Marked text={s} />
-                  </li>
-                ))}
-              </ol>
+              {pack.clips.length > 0 ? (
+                <p className="mb-3 font-mono text-[0.7rem] text-faint">Tap a step to jump the video to that bit.</p>
+              ) : null}
+              <StepList
+                steps={lesson.steps}
+                clips={pack.clips}
+                clipForStep={(i) => clipIndexForStep(pack, i, lesson.steps.length)}
+                activeClip={activeClip}
+                onSelect={(i) => {
+                  setLastClip(lesson.id, i);
+                  setSeekGen((n) => n + 1);
+                  document.getElementById("lesson-player")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              />
             </section>
 
             <div className="wide:flex wide:flex-col">

@@ -70,7 +70,7 @@ export const CLASSES: CourseClass[] = [
   { id: "building-shell", topic: "buildings", name: "Building shells", blurb: "Silhouette, doorway, LODs — official Cfx video, then a shed from boxes with no tutorial. Two neighbouring shells into one is the next class." },
   { id: "building-join", topic: "buildings", name: "Two into one", blurb: "Two neighbouring vanilla shells, one drawable, both old buildings gone in-game. Not two MLOs glued together." },
   { id: "world-edit", topic: "codewalker", name: "World edit basics", blurb: "A new fenced yard of vanilla props, then your crate in it. Gates, car parks, and editing the existing world are the Areas class." },
-  { id: "area-edit", topic: "areas", name: "Gates, compounds, open ground", blurb: "Move a vanilla gate, clear a lot, then fence a compound with a drive-through — not a building." },
+  { id: "area-edit", topic: "areas", name: "Gates, compounds, open ground", blurb: "Move a vanilla gate, clear a lot, fence a compound, then a sliding gate the engine opens — not a building." },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -96,7 +96,7 @@ export const LESSONS: Lesson[] = [
       { label: "The move tool and [[G]]", start: 374 },
     ],
     videoId: "",
-    videoNote: "Grant Abbitt's beginner Blender series — the slow one. Watch at 0.75×.",
+    videoNote: "Grant Abbitt's beginner Blender series — the slow one. Starts at 0.75×.",
     tips: [
       {
         text: "If orbiting spins round the wrong point, press [[Numpad .]] on your selection first. Blender orbits the view centre, not the object.",
@@ -1425,9 +1425,9 @@ export const LESSONS: Lesson[] = [
         url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
       },
       {
-        text: "A mesh that slides open is map animation or a script — Cfx Part 7, later. Today the gate just sits where you put it.",
-        source: "Cfx Part 7",
-        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-7/",
+        text: "A mesh that slides open is Cfx Part 8 (Sliding Door 8) — lesson 39, after the compound sits. Not a lock script.",
+        source: "Cfx Part 8",
+        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
       },
     ],
     checklist: [
@@ -1562,6 +1562,56 @@ export const LESSONS: Lesson[] = [
       "Walked the fence both ways",
       "Nothing floating",
       "Ymap names in notes",
+    ],
+  },
+  {
+    id: 39,
+    classId: "area-edit",
+    kind: "project",
+    title: "A sliding gate that moves",
+    doneWhen:
+      "The compound drive-through uses a sliding gate: origin at the bottom corner, Special Attribute Sliding Door (8), Dynamic and Enable Door Physics — it slides in-game. No lock script.",
+    intro:
+      "Lesson 33's gate sat there. Today the engine slides it. Official Cfx/ook_3D Part 8 is the door-and-gate video. Template {{prop_facgate_07b.ydr}}. Part 7 is extra if you wanted a looping mesh animation instead. You are not writing qb-doorlock.",
+    dont: "Do not install a lock script. Do not use Normal Door (7) on a sliding gate — that makes it swing. Do not leave the origin at the mesh centre. Do not start a garage door today.",
+    steps: [
+      "Finish the compound (lessons 33–34) so you have a drive-through. You need a gate mesh: steal {{prop_facgate_07b.ydr}} as the template (Cfx Part 2 export if you do not have it), or align your own flat gate to that template. Part 8 is Slow — it starts at 0.75×. Pause after every origin click.",
+      "Blender: import the template. Align YOUR gate mesh to it. Select the gate mesh, Mesh → Snap → Cursor to Selected. Object mode: Object → Set Origin → Origin to 3D Cursor. For a sliding gate the origin is the bottom corner, not a hinge. [[Ctrl+A]] Apply All Transforms.",
+      "Convert your mesh to a Drawable. Delete the template door mesh, unparent yours, parent it to the template Armature/Drawable. Add a Copy Transforms constraint: Target = the Armature, Bone = the template door bone. If you scaled collision, make a new Bound Composite and parent the collision to it.",
+      "New YTYP archetype. Special Attribute: Sliding Door (8) — not Normal Door (7). Archetype flags: Dynamic, and Enable Door Physics. Unique name xn_slidegate_01.",
+      "Export {{.ydr}} and {{.ytyp}}. Stream them. CodeWalker: put that archetype on the compound opening (replace the sitting gate or add a new entity). Calculate Extents and Flags. Manifest Generator. Restart localhost.",
+      "Walk up. The engine should slide it. If it swings, you used attribute 7. If it does nothing, the origin is wrong or the flags are missing. Write the archetype and template name in notes. Part 7 is only if you wanted a looping animation instead of door physics.",
+    ],
+    clips: [
+      { label: "Cfx Part 8: doors and sliding gates (official)", start: 0, videoId: "ajqNHqB8mYw" },
+      { label: "Cfx Part 7: map animation (extra — not door physics)", start: 0, videoId: "11EXhLYfJLs" },
+    ],
+    videoId: "",
+    videoNote:
+      "Cfx Part 8 is the sliding-gate video. Origin at the bottom corner. Sliding Door (8). Part 7 is extra looping animation, not the gate itself.",
+    tips: [
+      {
+        text: "Sliding door / gate: template {{prop_facgate_07b.ydr}}, origin at the bottom corner, Special Attribute Sliding Door (8), flags Dynamic and Enable Door Physics.",
+        source: "Cfx Part 8",
+        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
+      },
+      {
+        text: "Swinging doors use a different template and Normal Door (7) at the hinge. Garage doors are Garage Door (5) at the bottom centre — not today.",
+        source: "Cfx Part 8",
+        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
+      },
+      {
+        text: "Part 7 is UV or armature clip dictionaries that loop. A compound gate that the engine slides is Part 8, not a lock resource.",
+        source: "Cfx Part 7",
+        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-7/",
+      },
+    ],
+    checklist: [
+      "Origin at the bottom corner",
+      "Special Attribute Sliding Door (8)",
+      "Dynamic + Enable Door Physics",
+      "Template was prop_facgate_07b",
+      "Gate slides in-game — no lock script",
     ],
   },
 

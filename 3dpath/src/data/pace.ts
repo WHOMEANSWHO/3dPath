@@ -10,7 +10,20 @@ export interface PacePack {
   videoId: string;
   videoNote: string;
   clips: Clip[];
+  /** Clip index per written step. Missing entries spread steps across clips in order. */
+  stepClips?: Array<number | null>;
 }
+
+/** Which clip a step should play. Null = this lesson has no video to jump. */
+export const clipIndexForStep = (pack: PacePack, stepIndex: number, stepCount = pack.clips.length): number | null => {
+  const n = pack.clips.length;
+  if (n === 0) return null;
+  const mapped = pack.stepClips?.[stepIndex];
+  if (mapped === null) return null;
+  if (typeof mapped === "number" && mapped >= 0 && mapped < n) return mapped;
+  const total = Math.max(1, stepCount);
+  return Math.min(Math.floor((stepIndex * n) / total), n - 1);
+};
 
 const fallback = (lesson: Lesson): PacePack => ({
   videoId: lesson.videoId,
@@ -46,6 +59,8 @@ const fallback = (lesson: Lesson): PacePack => ({
  * dVBO3_ZGL_Q  ook_3D / Cfx Part 4 — ymap / map resource
  * UN7iaK5ADpk  ook_3D / Cfx Part 5 — collision
  * dVkvYm4eDeI  ook_3D / Cfx Part 6 — LODs
+ * 11EXhLYfJLs  ook_3D / Cfx Part 7 — map animation
+ * ajqNHqB8mYw  ook_3D / Cfx Part 8 — doors / sliding gates
  * K_Kk4n_-Z8s  RoyalT — export XMLs from CodeWalker
  * s91lzkS8rKY  RoyalT — model, export, test interior
  * na_62B-OxGs  RoyalT — fill ground and collision
@@ -70,6 +85,8 @@ const CFX3 = "FOBlazpGIhA";
 const CFX4 = "dVBO3_ZGL_Q";
 const CFX5 = "UN7iaK5ADpk";
 const CFX6 = "dVkvYm4eDeI";
+const CFX7 = "11EXhLYfJLs";
+const CFX8 = "ajqNHqB8mYw";
 const YMAP_EDIT = "VDoAjV3kv2g";
 const GATE_YMAP = "z3QwE87YtDk";
 
@@ -78,13 +95,14 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
     slow: {
       videoId: GRANT5,
       videoNote:
-        "Grant Abbitt — Blender 5 Part 1 (the slow one). Watch at 0.75×. Pause after every control and copy it. Official shorts below are one idea each.",
+        "Grant Abbitt — Blender 5 Part 1 (the slow one). Starts at 0.75×. Pause after every control and copy it. Official shorts below are one idea each.",
       clips: [
         { label: "First steps (official, 1 min)", start: 0, videoId: "MF1qEhBSfq4" },
         { label: "Viewport navigation (official, 4 min)", start: 0, videoId: "ILqOWe3zAbk" },
         { label: "Grant: orbit, pan, zoom", start: 127, videoId: GRANT5 },
         { label: "Grant: viewport, camera, ortho", start: 192, videoId: GRANT5 },
       ],
+      stepClips: [2, 2, 2, 3, 3, 2],
     },
     fast: {
       videoId: DONUT,
@@ -93,18 +111,20 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Download and navigation", start: 50 },
         { label: "Adding objects", start: 362 },
       ],
+      stepClips: [0, 0, 0, 0, 0, 0],
     },
   },
   2: {
     slow: {
       videoId: GRANT5,
-      videoNote: "Stay on Grant Part 1. Watch at 0.75×. Type the numbers — do not drag.",
+      videoNote: "Stay on Grant Part 1. Starts at 0.75×. Type the numbers — do not drag.",
       clips: [
         { label: "Grant: Move [[G]] and axis locks", start: 374, videoId: GRANT5 },
         { label: "Grant: Rotate [[R]] and Scale [[S]]", start: 465, videoId: GRANT5 },
         { label: "Grant: typed numbers (90°, scale 3)", start: 606, videoId: GRANT5 },
         { label: "Select & Transform (official)", start: 0, videoId: "hTL6AKR8YDs" },
       ],
+      stepClips: [0, 1, 1, 2, 2],
     },
     fast: {
       videoId: DONUT,
@@ -113,6 +133,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Move tool [[G]]", start: 733 },
         { label: "Edit mode (peek only — next lesson)", start: 942 },
       ],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   3: {
@@ -125,6 +146,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Grant: edit mode, vertices, faces", start: 0, videoId: "F_JK9eaYYTQ" },
         { label: "Grant: extrude [[E]] (body of the stag — keys only)", start: 0, videoId: "F_JK9eaYYTQ" },
       ],
+      stepClips: [0, 1, 1, 1, 2],
     },
     fast: {
       videoId: DONUT,
@@ -133,6 +155,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Edit mode", start: 942 },
         { label: "Loop cut and inset (mug — steal the keys only)", start: 1363 },
       ],
+      stepClips: [0, 0, 0, 0, 1],
     },
   },
   4: {
@@ -144,11 +167,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Grant: 3D cursor (where things appear)", start: 341, videoId: GRANT5 },
         { label: "Select & Transform (official)", start: 0, videoId: "hTL6AKR8YDs" },
       ],
+      stepClips: [1, 1, 1, 0, 1],
     },
     fast: {
       videoId: "hTL6AKR8YDs",
       videoNote: "Official Select & Transform at 1×, then do [[Ctrl+A]] and Set Origin from the steps. Do not skip apply.",
       clips: [{ label: "Select & Transform", start: 0, videoId: "hTL6AKR8YDs" }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   5: {
@@ -157,11 +182,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoNote:
         "Grant types 90 and 3 at 0.75× — that is the habit. Scene units are in Official reading below; there is no separate units video.",
       clips: [{ label: "Grant: typed rotation and scale", start: 606, videoId: GRANT5 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: GRANT5,
       videoNote: "Same typed-number clip at 1×. Then measure against ref_human — the N panel is the lesson.",
       clips: [{ label: "Typed numbers", start: 606 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   6: {
@@ -173,6 +200,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Grant: 3D cursor (origin)", start: 341, videoId: GRANT5 },
         { label: "Select & Transform (official)", start: 0, videoId: "hTL6AKR8YDs" },
       ],
+      stepClips: [1, 1, 0, 1, 1],
     },
     fast: {
       videoId: "",
@@ -190,6 +218,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Installing Sollumz (click-by-click)", start: 0, videoId: "zv3NdateGqs" },
         { label: "Convert / export (Desertos — skip rooms)", start: 0, videoId: MLO },
       ],
+      stepClips: [1, 2, 2, 2, 2],
     },
     fast: {
       videoId: CFX3,
@@ -198,6 +227,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 3: create a drawable", start: 0, videoId: CFX3 },
         { label: "Convert / export (Desertos — skip rooms)", start: 0, videoId: MLO },
       ],
+      stepClips: [0, 0, 0, 1, 1],
     },
   },
   8: {
@@ -209,11 +239,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 5: collision (official)", start: 0, videoId: CFX5 },
         { label: "Simple prop collisions (Blender/Sollumz)", start: 0, videoId: "-24PBSYT74w" },
       ],
+      stepClips: [0, 1, 1, 0, 0],
     },
     fast: {
       videoId: CFX5,
       videoNote: "Same official collision video at 1×. Box bound, wood material, re-export.",
       clips: [{ label: "Cfx Part 5: collision", start: 0, videoId: CFX5 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   9: {
@@ -225,6 +257,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: place and stream (official)", start: 0, videoId: CFX4 },
         { label: "CodeWalker: files into a map resource", start: 0, videoId: CW },
       ],
+      stepClips: [0, 0, 1, 1, 1],
     },
     fast: {
       videoId: CFX4,
@@ -233,6 +266,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: map resource", start: 0, videoId: CFX4 },
         { label: "RIB SOSAY: MLO onto the server (Part 4)", start: 0, videoId: "E5JgRiQMneo" },
       ],
+      stepClips: [0, 0, 1, 1, 1],
     },
   },
   10: {
@@ -240,11 +274,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoId: MLO,
       videoNote: "Desertos custom MLO at 0.75× — watch limbo and rooms twice before you touch anything. The full from-scratch job is the next class. Sollumz create-ytyp is the written twin.",
       clips: [{ label: "Custom MLO interior in Sollumz", start: 0 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: "fgCK5FRsZMM",
       videoNote: "Older Sollumz UI — menus moved. Use it for rooms/portals shape, then match current panels.",
       clips: [{ label: "MLO with lights (older UI)", start: 0 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   11: {
@@ -252,21 +288,24 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoId: MLO,
       videoNote: "Same Sollumz MLO video. Portal section — 0.75×, stand in the doorway after. Room → Limbo, then Flip Direction if the arrow lies.",
       clips: [{ label: "Sollumz MLO (portals in this video)", start: 0 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: "fgCK5FRsZMM",
       videoNote: "Older UI. Steal portal from/to and flip; then do it in current Sollumz.",
       clips: [{ label: "Portals (older tutorial)", start: 0 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   12: {
     slow: {
       videoId: "hBH1vZY8rWc",
-      videoNote: "Vertex painting — Sollumz FAQ video. Watch at 0.75×. Green inside, low values, not 255.",
+      videoNote: "Vertex painting — Sollumz FAQ video. Starts at 0.75×. Green inside, low values, not 255.",
       clips: [
         { label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" },
         { label: "Lights in an MLO (older UI, 55:42)", start: 3342, videoId: "fgCK5FRsZMM" },
       ],
+      stepClips: [0, 0, 0, 1, 1],
     },
     fast: {
       videoId: "hBH1vZY8rWc",
@@ -275,6 +314,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" },
         { label: "Adding lights", start: 3342, videoId: "fgCK5FRsZMM" },
       ],
+      stepClips: [0, 0, 0, 1, 1],
     },
   },
   13: {
@@ -286,6 +326,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 3: assets in Blender (official)", start: 0, videoId: CFX3 },
         { label: "Grant: blocking from a cube (steal silhouette habits)", start: 0, videoId: "F_JK9eaYYTQ" },
       ],
+      stepClips: [1, 1, 0, 0, 0],
     },
     fast: {
       videoId: CFX3,
@@ -294,6 +335,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 3: create the drawable", start: 0, videoId: CFX3 },
         { label: "Loop cut / inset (donut — keys only)", start: 1363, videoId: DONUT },
       ],
+      stepClips: [0, 1, 0, 0, 0],
     },
   },
   14: {
@@ -305,11 +347,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 5: world collision hole", start: 0, videoId: CFX5 },
         { label: "Desertos: doorway / portal (skip modelling)", start: 0, videoId: MLO },
       ],
+      stepClips: [1, 0, 0, 1, 1],
     },
     fast: {
       videoId: CFX5,
       videoNote: "Part 5 at 1×. Align openings, millimetre gap, walk street-to-room.",
       clips: [{ label: "Cfx Part 5: collision / doorway", start: 0, videoId: CFX5 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   15: {
@@ -318,11 +362,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoNote:
         "Official Cfx/ook_3D Part 6 at 0.75× — HD and LOD drawables, two ymaps, parent filename, ParentIndex 0, NumChildren 1, Manifest Generator. Pause and copy every field.",
       clips: [{ label: "Cfx Part 6: LODs (official)", start: 0, videoId: CFX6 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: CFX6,
       videoNote: "Same official LOD video at 1×, then drive away from the building and watch the swap.",
       clips: [{ label: "Cfx Part 6: LODs", start: 0, videoId: CFX6 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   16: {
@@ -333,11 +379,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 2: explore and export (official)", start: 0, videoId: CFX2 },
         { label: "RIB SOSAY: CodeWalker world view", start: 0, videoId: CW },
       ],
+      stepClips: [0, 0, 1, 1, 0],
     },
     fast: {
       videoId: CFX2,
       videoNote: "Part 2 at 1.25× if you already know WASD. Still save nothing this lesson.",
       clips: [{ label: "Cfx Part 2: CodeWalker", start: 0, videoId: CFX2 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   17: {
@@ -349,11 +397,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: ymap and resource (official)", start: 0, videoId: CFX4 },
         { label: "RIB SOSAY: place and save", start: 0, videoId: CW },
       ],
+      stepClips: [0, 1, 1, 0, 0],
     },
     fast: {
       videoId: CFX4,
       videoNote: "Part 4 at 1×. New ymap, fence a yard, extents + flags, stream, walk it.",
       clips: [{ label: "Cfx Part 4: place and save", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   18: {
@@ -362,11 +412,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoNote:
         "Part 4 again for the resource tree. Official reading is Cfx resources + CodeWalker project files. The fifteen-minute rebuild is still the teacher.",
       clips: [{ label: "Cfx Part 4: map resource layout", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: CFX1,
       videoNote: "Part 1 workspace, then zip it and prove the rebuild. Fast does not skip the README.",
       clips: [{ label: "Cfx Part 1: tooling / folders", start: 0, videoId: CFX1 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   19: {
@@ -379,6 +431,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Grant: cube → shape (steal the keys, skip the stag)", start: 0, videoId: "F_JK9eaYYTQ" },
         { label: "Bevel tool (official)", start: 0, videoId: "JSvGts95S7A" },
       ],
+      stepClips: [0, 1, 1, 2, 1],
     },
     fast: {
       videoId: DONUT,
@@ -390,6 +443,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Edit mode", start: 942 },
         { label: "Bevel (official)", start: 0, videoId: "JSvGts95S7A" },
       ],
+      stepClips: [0, 0, 1, 3, 0],
     },
   },
   20: {
@@ -398,6 +452,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoNote:
         "Same Grant animal at 0.75× — steal [[Ctrl+R]] and [[E]] for planks and the lip. Skip the creature. Official loop-cut page is in reading.",
       clips: [{ label: "Grant: [[E]] and loop cuts on a cube", start: 0, videoId: "F_JK9eaYYTQ" }],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: DONUT,
@@ -406,17 +461,19 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Edit mode", start: 942 },
         { label: "Loop cut / inset (mug — keys only)", start: 1363 },
       ],
+      stepClips: [0, 1, 1, 0, 0],
     },
   },
   21: {
     slow: {
       videoId: GRANT5,
       videoNote:
-        "Origins and the 3D cursor. Watch at 0.75×, then [[Ctrl+A]], merge, collection, save. The donut save chapter is Fast-only.",
+        "Origins and the 3D cursor. Starts at 0.75×, then [[Ctrl+A]], merge, collection, save. The donut save chapter is Fast-only.",
       clips: [
         { label: "Grant: 3D cursor", start: 341, videoId: GRANT5 },
         { label: "Select & Transform (official)", start: 0, videoId: "hTL6AKR8YDs" },
       ],
+      stepClips: [1, 1, 1, 0, 1],
     },
     fast: {
       videoId: DONUT,
@@ -425,6 +482,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Donut Part 1: save the file", start: 1631, videoId: DONUT },
         { label: "Grant: 3D cursor", start: 341, videoId: GRANT5 },
       ],
+      stepClips: [1, 1, 1, 1, 0],
     },
   },
   22: {
@@ -448,11 +506,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Installing Sollumz", start: 0, videoId: "zv3NdateGqs" },
         { label: "Convert / export (skip rooms)", start: 0, videoId: MLO },
       ],
+      stepClips: [1, 1, 1, 1, 1],
     },
     fast: {
       videoId: MLO,
       videoNote: "Same convert/export at 1×. Unique archetype name. Then stand on it in-game.",
       clips: [{ label: "Drawable / export (Sollumz)", start: 0, videoId: MLO }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   24: {
@@ -488,11 +548,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: place and save (official)", start: 0, videoId: CFX4 },
         { label: "RIB SOSAY: CodeWalker place", start: 0, videoId: CW },
       ],
+      stepClips: [1, 1, 0, 0, 0],
     },
     fast: {
       videoId: CFX4,
       videoNote: "Part 4 at 1×. Sit your crate on the ground. If it is invisible, _manifest.ymf and the ytyp — not a new fence.",
       clips: [{ label: "Cfx Part 4: place and save", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
     },
   },
   27: {
@@ -505,6 +567,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: exporting XMLs from CodeWalker", start: 0, videoId: "K_Kk4n_-Z8s" },
         { label: "RoyalT: from-scratch intro (what this class is)", start: 0, videoId: "9jPKQLiXSuA" },
       ],
+      stepClips: [0, 1, 1, 0, 2],
     },
     fast: {
       videoId: "K_Kk4n_-Z8s",
@@ -513,6 +576,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: export XMLs", start: 0, videoId: "K_Kk4n_-Z8s" },
         { label: "Cfx Part 2 (if a menu moved)", start: 0, videoId: CFX2 },
       ],
+      stepClips: [0, 0, 0, 1, 0],
     },
   },
   28: {
@@ -524,6 +588,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Desertos: custom interior from scratch", start: 0, videoId: MLO },
         { label: "RoyalT: model, export, test", start: 0, videoId: "s91lzkS8rKY" },
       ],
+      stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: "s91lzkS8rKY",
@@ -532,6 +597,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: model and test interior", start: 0, videoId: "s91lzkS8rKY" },
         { label: "Desertos (keys, if you stall)", start: 0, videoId: MLO },
       ],
+      stepClips: [0, 0, 0, 0, 1],
     },
   },
   29: {
@@ -543,6 +609,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Desertos: collision, ytyp, portals, stream", start: 0, videoId: MLO },
         { label: "RoyalT: export and test interior", start: 0, videoId: "s91lzkS8rKY" },
       ],
+      stepClips: [0, 0, 0, 0, 1],
     },
     fast: {
       videoId: "s91lzkS8rKY",
@@ -551,6 +618,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: test interior", start: 0, videoId: "s91lzkS8rKY" },
         { label: "Older Sollumz UI (portals/lights)", start: 0, videoId: "fgCK5FRsZMM" },
       ],
+      stepClips: [0, 0, 1, 1, 0],
     },
   },
   30: {
@@ -563,6 +631,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: fill ground and collision", start: 0, videoId: "na_62B-OxGs" },
         { label: "RoyalT: remove props, occlusions, YMF", start: 0, videoId: "gG_8NeiXKRE" },
       ],
+      stepClips: [0, 1, 2, 0, 2],
     },
     fast: {
       videoId: "gG_8NeiXKRE",
@@ -571,6 +640,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 5: collision hole", start: 0, videoId: CFX5 },
         { label: "RoyalT: remove props and occlusions", start: 0, videoId: "gG_8NeiXKRE" },
       ],
+      stepClips: [0, 1, 1, 0, 1],
     },
   },
   31: {
@@ -582,6 +652,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Tobii: create and modify ymaps", start: 0, videoId: YMAP_EDIT },
         { label: "Cfx Part 4: stream a ymap (official)", start: 0, videoId: CFX4 },
       ],
+      stepClips: [0, 0, 0, 0, 1, 1],
     },
     fast: {
       videoId: YMAP_EDIT,
@@ -590,6 +661,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Tobii: modify ymaps", start: 0, videoId: YMAP_EDIT },
         { label: "Cfx Part 4: stream", start: 0, videoId: CFX4 },
       ],
+      stepClips: [0, 0, 0, 0, 1, 1],
     },
   },
   32: {
@@ -602,6 +674,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: clearing land (stop before the interior)", start: 0, videoId: "uPHig3V-cqo" },
         { label: "Tobii: modifying ymaps", start: 0, videoId: YMAP_EDIT },
       ],
+      stepClips: [2, 0, 0, 0, 1, 2],
     },
     fast: {
       videoId: "gG_8NeiXKRE",
@@ -610,6 +683,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: remove props", start: 0, videoId: "gG_8NeiXKRE" },
         { label: "Tobii: modify ymaps", start: 0, videoId: YMAP_EDIT },
       ],
+      stepClips: [1, 0, 0, 0, 1, 1],
     },
   },
   33: {
@@ -622,6 +696,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: new ymap and resource (official)", start: 0, videoId: CFX4 },
         { label: "RIB SOSAY: add a prop", start: 0, videoId: CW },
       ],
+      stepClips: [1, 2, 0, 2, 1, 1],
     },
     fast: {
       videoId: GATE_YMAP,
@@ -630,6 +705,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Twisle: place a gate", start: 0, videoId: GATE_YMAP },
         { label: "Cfx Part 4: ymap resource", start: 0, videoId: CFX4 },
       ],
+      stepClips: [1, 1, 0, 0, 1, 1],
     },
   },
   34: {
@@ -653,6 +729,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 2: export and import (official)", start: 0, videoId: CFX2 },
         { label: "RoyalT: export XMLs from CodeWalker", start: 0, videoId: "K_Kk4n_-Z8s" },
       ],
+      stepClips: [0, 0, 0, 1, 0],
     },
     fast: {
       videoId: "K_Kk4n_-Z8s",
@@ -661,6 +738,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "RoyalT: export XMLs", start: 0, videoId: "K_Kk4n_-Z8s" },
         { label: "Cfx Part 2 (if a menu moved)", start: 0, videoId: CFX2 },
       ],
+      stepClips: [0, 0, 0, 1, 0],
     },
   },
   36: {
@@ -672,11 +750,13 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 3: drawable in Blender (official)", start: 0, videoId: CFX3 },
         { label: "Grant: blocking from a cube (connecting piece)", start: 0, videoId: "F_JK9eaYYTQ" },
       ],
+      stepClips: [1, 1, 0, 0, 0, 0],
     },
     fast: {
       videoId: CFX3,
       videoNote: "Part 3 at 1×. Convert both shells plus the gap box to one drawable. Origin at the combined base.",
       clips: [{ label: "Cfx Part 3: convert to drawable", start: 0, videoId: CFX3 }],
+      stepClips: [0, 0, 0, 0, 0, 0],
     },
   },
   37: {
@@ -689,6 +769,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Tobii: modifying ymaps", start: 0, videoId: YMAP_EDIT },
         { label: "Cfx Part 5: world collision (if you hit a ghost wall)", start: 0, videoId: CFX5 },
       ],
+      stepClips: [0, 1, 0, 0, 1, 2],
     },
     fast: {
       videoId: CFX4,
@@ -697,6 +778,7 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 4: place and stream", start: 0, videoId: CFX4 },
         { label: "Tobii: delete vanilla entities", start: 0, videoId: YMAP_EDIT },
       ],
+      stepClips: [0, 1, 0, 0, 1, 1],
     },
   },
   38: {
@@ -709,6 +791,27 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
       videoId: "",
       videoNote: "No video on Fast either. Two buildings are one when you can walk them without Part 3.",
       clips: [],
+    },
+  },
+  39: {
+    slow: {
+      videoId: CFX8,
+      videoNote:
+        "Official Cfx/ook_3D Part 8 at 0.75× — doors and sliding gates. Origin at the bottom corner. Sliding Door (8). Part 7 is extra looping animation, not the gate itself.",
+      clips: [
+        { label: "Cfx Part 8: doors and sliding gates (official)", start: 0, videoId: CFX8 },
+        { label: "Cfx Part 7: map animation (extra)", start: 0, videoId: CFX7 },
+      ],
+      stepClips: [0, 0, 0, 0, 0, 1],
+    },
+    fast: {
+      videoId: CFX8,
+      videoNote: "Part 8 at 1×. Bottom-corner origin, Sliding Door (8), Dynamic + Enable Door Physics. No lock script.",
+      clips: [
+        { label: "Cfx Part 8: sliding gates", start: 0, videoId: CFX8 },
+        { label: "Cfx Part 7: map animation (extra)", start: 0, videoId: CFX7 },
+      ],
+      stepClips: [0, 0, 0, 0, 0, 1],
     },
   },
 };

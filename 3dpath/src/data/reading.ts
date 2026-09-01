@@ -441,9 +441,9 @@ const READING: Record<number, DocLink[]> = {
       url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
     },
     {
-      title: "Map animation (not today — sliding gates later)",
-      source: "Cfx Part 7",
-      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-7/",
+      title: "Door creation (sliding gates — later, lesson 39)",
+      source: "Cfx Part 8",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
     },
     {
       title: "CodeWalker releases & readme",
@@ -540,6 +540,23 @@ const READING: Record<number, DocLink[]> = {
       url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
     },
   ],
+  39: [
+    {
+      title: "Part 8 — Door creation (sliding gates)",
+      source: "Cfx Part 8",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
+    },
+    {
+      title: "Part 7 — Map animation (extra looping clips)",
+      source: "Cfx Part 7",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-7/",
+    },
+    {
+      title: "Creating static meshes",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-static-meshes",
+    },
+  ],
 };
 
 export const OFFICIAL_SHELF: { heading: string; links: DocLink[] }[] = [
@@ -580,6 +597,11 @@ export const OFFICIAL_SHELF: { heading: string; links: DocLink[] }[] = [
         title: "Part 7 — Map animation",
         source: "Cfx docs",
         url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-7/",
+      },
+      {
+        title: "Part 8 — Door creation",
+        source: "Cfx docs",
+        url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
       },
       {
         title: "Resource manifest",

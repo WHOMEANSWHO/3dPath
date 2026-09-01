@@ -32,7 +32,18 @@ export const EMPTY_RECORD: LessonRecord = {
   lastClip: null,
 };
 
-const STORAGE_KEY = "3dpath:v1";
+export const STORAGE_KEY = "3dpath:v1";
+
+declare global {
+  interface Window {
+    pywebview?: {
+      api?: {
+        save_progress: (payload: string) => Promise<string>;
+        load_progress: () => Promise<string>;
+      };
+    };
+  }
+}
 
 const migrateRecord = (raw: Partial<LessonRecord> | undefined): LessonRecord => {
   const rec = { ...EMPTY_RECORD, ...raw };
@@ -44,31 +55,37 @@ const migrateRecord = (raw: Partial<LessonRecord> | undefined): LessonRecord => 
   return rec;
 };
 
-const load = (): AppState => {
+const hydrate = (raw: string | null): AppState | null => {
+  if (!raw) return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as AppState;
-      if (parsed && typeof parsed === "object" && parsed.lessons) {
-        const lessons: Record<number, LessonRecord> = {};
-        for (const [k, v] of Object.entries(parsed.lessons)) {
-          lessons[Number(k)] = migrateRecord(v);
-        }
-        return {
-          lessons,
-          lastLessonId: parsed.lastLessonId ?? null,
-          pace: parsed.pace === "fast" ? "fast" : "slow",
-        };
-      }
+    const parsed = JSON.parse(raw) as AppState;
+    if (!parsed || typeof parsed !== "object" || !parsed.lessons) return null;
+    const lessons: Record<number, LessonRecord> = {};
+    for (const [k, v] of Object.entries(parsed.lessons)) {
+      lessons[Number(k)] = migrateRecord(v);
     }
+    return {
+      lessons,
+      lastLessonId: parsed.lastLessonId ?? null,
+      pace: parsed.pace === "fast" ? "fast" : "slow",
+    };
   } catch {
-    /* fall through to empty */
+    return null;
   }
-  return { lessons: {}, lastLessonId: null, pace: "slow" };
 };
+
+const emptyState = (): AppState => ({ lessons: {}, lastLessonId: null, pace: "slow" });
+
+const load = (): AppState => hydrate(localStorage.getItem(STORAGE_KEY)) ?? emptyState();
 
 let state: AppState = load();
 const listeners = new Set<() => void>();
+
+const diskSave = () => {
+  const api = window.pywebview?.api;
+  if (!api?.save_progress) return;
+  void api.save_progress(JSON.stringify(state));
+};
 
 const commit = (next: AppState) => {
   state = next;
@@ -77,6 +94,7 @@ const commit = (next: AppState) => {
   } catch {
     /* storage full or blocked — keep going in memory */
   }
+  diskSave();
   listeners.forEach((l) => l());
 };
 
@@ -123,4 +141,36 @@ export const setPace = (pace: Pace) => {
 
 export const touchLesson = (id: number) => {
   if (state.lastLessonId !== id) commit({ ...state, lastLessonId: id });
+};
+
+export const exportProgressJson = () => JSON.stringify(state, null, 2);
+
+export const importProgressJson = (raw: string) => {
+  const next = hydrate(raw);
+  if (!next) throw new Error("That file is not a 3dPath backup.");
+  commit(next);
+};
+
+/** Copy ticks and notes to %APPDATA%\\3dPath when running inside the exe. */
+export const attachDiskBackup = () => {
+  const boot = async () => {
+    const api = window.pywebview?.api;
+    if (!api?.load_progress) return;
+    try {
+      const disk = await api.load_progress();
+      const local = localStorage.getItem(STORAGE_KEY);
+      if (!local && disk) {
+        const next = hydrate(disk);
+        if (next) {
+          commit(next);
+          return;
+        }
+      }
+      diskSave();
+    } catch {
+      /* keep browser storage */
+    }
+  };
+  window.addEventListener("pywebviewready", () => void boot());
+  if (window.pywebview?.api) void boot();
 };

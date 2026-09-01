@@ -17,12 +17,12 @@ Do not download an exe from the repo tree. Ship the GitHub Release asset — tha
 
 1. Download **3dPath.exe**.
 2. Double-click it. Windows may ask to allow it.
-3. Learn. Progress stays on that PC (browser storage inside the app).
+3. Learn. Progress stays on that PC. Notes has a backup download; the exe also copies it to AppData.
 4. You still need the internet for YouTube playback and official-doc links. Blender, GTA V, CodeWalker, and FiveM stay separate installs.
 
-Windows SmartScreen may appear because the app is not signed. **More info → Run anyway**.
+Windows SmartScreen may appear because the app is not signed. **More info → Run anyway**. First launch shows this on one screen.
 
-The window is the school. Official doc links open in the normal browser. YouTube stays in the lesson.
+The window is the school. Official doc links open in the normal browser. YouTube stays in the lesson. Slow starts the player at 0.75×.
 
 ## Requirements
 
@@ -46,8 +46,9 @@ Curriculum edits: change files under `3dpath/src/data/`, then `python build.py` 
 
 Double-click `Start 3dPath.bat` in this folder (or in Documents\3d). Keep that
 window open while you learn. YouTube will not play inside a double-clicked
-`.html` file (Error 153). The bat opens 3dPath at `http://127.0.0.1` on this
-machine only.
+`.html` file (Error 153). The bat opens 3dPath at `http://127.0.0.1:17324/` —
+the same address as the exe — so ticks and notes stay put. If that address is
+already open, the bat uses it instead of picking another port.
 
 ```
 npm install        # first time only
@@ -69,15 +70,15 @@ The app switches at 1200px window width:
 
 ## Videos
 
-Each lesson has a **Slow** and **Fast** pack in `src/data/pace.ts`. Default is Slow.
-Only real YouTube IDs are baked in. 3dPath links to other people’s videos; it does
-not ship those videos in the exe.
+Each lesson has a **Slow** and **Fast** pack in `src/data/pace.ts`. Default is Slow
+(player starts at 0.75×). Fast is 1×. Only real YouTube IDs are baked in. 3dPath
+links to other people’s videos; it does not ship those videos in the exe.
 
 ## Content
 
 Everything lives in `src/data/`:
 
-- `catalogue.ts` — topics, classes, and all 38 lessons
+- `catalogue.ts` — topics, classes, and all 39 lessons
 - `pace.ts` — Slow / Fast video packs and clip timestamps
 - `monthTrack.ts` — the September 2026 Tue/Thu/Fri playlist
 - `reference.ts` — the formats glossary and field notes

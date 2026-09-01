@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { TOPICS, topicPath } from "../data/catalogue";
 import PaceToggle from "./PaceToggle";
 import ScrollToTop from "./ScrollToTop";
+import WelcomeSplash from "./WelcomeSplash";
 
 const NAV = [
   { to: "/", label: "Home", end: true },
@@ -21,6 +22,7 @@ export default function AppShell() {
     <div className="min-h-screen">
       <div aria-hidden className="shop-texture" />
       <ScrollToTop />
+      <WelcomeSplash />
 
       <header className="sticky top-0 z-50 border-b border-line bg-night/92 backdrop-blur-sm">
         <div className="mx-auto flex h-14 max-w-[2300px] items-center gap-4 px-5 desk:px-8">

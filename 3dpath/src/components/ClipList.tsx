@@ -18,7 +18,7 @@ export default function ClipList({ clips, activeClip, onSelect }: Props) {
             <button
               type="button"
               onClick={() => onSelect(i)}
-              aria-current={active}
+              aria-current={active ? "true" : undefined}
               className={`flex min-h-11 w-full items-center gap-3 px-4 py-2.5 text-left transition-colors ${
                 active ? "border-l-2 border-l-amber bg-panel2" : "border-l-2 border-l-transparent hover:bg-panel2"
               }`}

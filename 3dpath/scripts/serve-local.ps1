@@ -1,4 +1,5 @@
-# 3dPath local launcher. Serves the single HTML file on 127.0.0.1 only.
+# 3dPath local launcher. Always http://127.0.0.1:17324/ — same address as the exe.
+# A different port would look like a different website, so ticks and notes vanish.
 # YouTube embeds need an http origin; a double-clicked file:// tab gets Error 153.
 
 $ErrorActionPreference = "Stop"
@@ -12,33 +13,42 @@ if (-not (Test-Path $htmlPath)) {
   exit 1
 }
 
-function Find-Port {
-  for ($p = 17324; $p -lt 17380; $p++) {
-    $listener = $null
-    try {
-      $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopback, $p)
-      $listener.Start()
-      return $p
-    } catch {
-      continue
-    } finally {
-      if ($listener) { $listener.Stop() }
-    }
+$port = 17324
+$prefix = "http://127.0.0.1:$port/"
+
+function Test-LoopbackOpen([int]$p) {
+  $client = $null
+  try {
+    $client = New-Object System.Net.Sockets.TcpClient
+    $iar = $client.BeginConnect("127.0.0.1", $p, $null, $null)
+    $ok = $iar.AsyncWaitHandle.WaitOne(400, $false)
+    if (-not $ok) { return $false }
+    $client.EndConnect($iar)
+    return $true
+  } catch {
+    return $false
+  } finally {
+    if ($client) { $client.Close() }
   }
-  throw "No free local port."
 }
 
-$port = Find-Port
-$prefix = "http://127.0.0.1:$port/"
+if (Test-LoopbackOpen $port) {
+  Start-Process $prefix
+  Write-Host "3dPath is already open at $prefix"
+  Write-Host "Using that address so your ticks and notes stay put."
+  Write-Host "Close the other 3dPath window if you meant to restart."
+  exit 0
+}
+
 $http = New-Object System.Net.HttpListener
 $http.Prefixes.Add($prefix)
 
 try {
   $http.Start()
 } catch {
-  Write-Host "Could not open a local address. YouTube embeds will fail (Error 153)."
+  Write-Host "Could not open $prefix"
+  Write-Host "3dPath always uses port 17324 so progress does not vanish."
   Write-Host $_.Exception.Message
-  Start-Process $htmlPath
   exit 1
 }
 

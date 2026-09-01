@@ -24,12 +24,27 @@ export const embedUrl = (videoId: string, start: number, autoplay: boolean) => {
     rel: "0",
     modestbranding: "1",
     playsinline: "1",
+    enablejsapi: "1",
   });
   if (autoplay) params.set("autoplay", "1");
   if (typeof window !== "undefined" && window.location.protocol.startsWith("http")) {
     params.set("origin", window.location.origin);
   }
   return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+};
+
+export const playbackRateForPace = (pace: "slow" | "fast") => (pace === "slow" ? 0.75 : 1);
+
+/** Ask an enablejsapi embed to change speed. Does not wrap or destroy the iframe. */
+export const postPlaybackRate = (iframe: HTMLIFrameElement, rate: number) => {
+  try {
+    iframe.contentWindow?.postMessage(
+      JSON.stringify({ event: "command", func: "setPlaybackRate", args: [rate] }),
+      "*",
+    );
+  } catch {
+    /* cross-origin until the embed is ready */
+  }
 };
 
 export const formatStart = (seconds: number) => {
