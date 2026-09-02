@@ -1,5 +1,4 @@
 import ContinueHero from "../components/ContinueHero";
-import MonthStrip from "../components/MonthStrip";
 import TopicCard from "../components/TopicCard";
 import { TOPICS } from "../data/catalogue";
 import { continueLesson, totalProgress } from "../lib/progress";
@@ -21,14 +20,15 @@ export default function Home() {
             {done}/{total} lessons complete
           </span>
         </div>
+        <p className="mb-3 max-w-[60ch] text-[0.85rem] leading-relaxed text-muted">
+          Open any lesson, any day. The list is an order, not a calendar.
+        </p>
         <div className="grid grid-cols-1 gap-4 desk:grid-cols-3">
           {TOPICS.map((t) => (
             <TopicCard key={t.id} topic={t} state={state} />
           ))}
         </div>
       </section>
-
-      <MonthStrip state={state} />
     </div>
   );
 }

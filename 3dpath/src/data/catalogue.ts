@@ -4,6 +4,8 @@
 // Paste-a-link still overrides. Clip.videoId switches the player when a clip
 // uses a different video than the pack default.
 
+import { EXTRA_LESSONS } from "./lessonsExtra";
+
 export type TopicId = "blender" | "props" | "interiors" | "buildings" | "codewalker" | "areas";
 
 export interface Clip {
@@ -32,6 +34,11 @@ export interface Lesson {
   videoNote: string;
   tips: Tip[];
   checklist: string[];
+  /**
+   * Order inside the class (and the path). Defaults to id × 10 so a new
+   * lesson can sit before a video-off gate without renumbering old ids.
+   */
+  sort?: number;
 }
 
 export interface CourseClass {
@@ -61,19 +68,19 @@ export const TOPICS: Topic[] = [
 ];
 
 export const CLASSES: CourseClass[] = [
-  { id: "blender-interface", topic: "blender", name: "Blender interface", blurb: "Move around, move things, then turn a cube into a room — the first made thing." },
-  { id: "blender-habits", topic: "blender", name: "Modelling habits", blurb: "Clean meshes and real scale, so the crate project does not lie to you." },
+  { id: "blender-interface", topic: "blender", name: "Blender interface", blurb: "Move around, move things, add and duplicate, then turn a cube into a room — the first made thing." },
+  { id: "blender-habits", topic: "blender", name: "Modelling habits", blurb: "Clean meshes, real scale, face orientation and grid snap, so the crate project does not lie to you." },
   { id: "blender-make", topic: "blender", name: "Make a crate", blurb: "The donut, for mapping. Follow along, then make it again with the video off. Every later class uses these keys." },
-  { id: "props-first", topic: "props", name: "Your first prop", blurb: "That crate, exported, solid, spawned — then a pallet to prove you can repeat it." },
-  { id: "mlo-fundamentals", topic: "interiors", name: "MLO fundamentals", blurb: "Limbo, rooms and portals on the room you already made — then Make an MLO is the full job." },
-  { id: "mlo-make", topic: "interiors", name: "Make an MLO", blurb: "The donut, for interiors. Model your own rooms from scratch, then replace a small vanilla building with them. Same idea as an MRPD replacement — never convert Rockstar's interior." },
-  { id: "building-shell", topic: "buildings", name: "Building shells", blurb: "Silhouette, doorway, LODs — official Cfx video, then a shed from boxes with no tutorial. Two neighbouring shells into one is the next class." },
-  { id: "building-join", topic: "buildings", name: "Two into one", blurb: "Two neighbouring vanilla shells, one drawable, both old buildings gone in-game. Not two MLOs glued together." },
-  { id: "world-edit", topic: "codewalker", name: "World edit basics", blurb: "A new fenced yard of vanilla props, then your crate in it. Gates, car parks, and editing the existing world are the Areas class." },
-  { id: "area-edit", topic: "areas", name: "Gates, compounds, open ground", blurb: "Move a vanilla gate, clear a lot, fence a compound, then a sliding gate the engine opens — not a building." },
+  { id: "props-first", topic: "props", name: "Your first prop", blurb: "That crate, exported, solid, spawned — then you fix the invisible one, paint it for outdoors, and a pallet to prove it stuck." },
+  { id: "mlo-fundamentals", topic: "interiors", name: "MLO fundamentals", blurb: "Limbo, rooms, portals, a second room, then Make an MLO is the full job." },
+  { id: "mlo-make", topic: "interiors", name: "Make an MLO", blurb: "The donut, for interiors. Model your own rooms from scratch, furnish them, replace a small vanilla building, then walk it with the video off." },
+  { id: "building-shell", topic: "buildings", name: "Building shells", blurb: "Silhouette, doorway, collision, LODs — official Cfx video, then a shed from boxes with no tutorial. Two neighbouring shells into one is the next class." },
+  { id: "building-join", topic: "buildings", name: "Two into one", blurb: "Two neighbouring vanilla shells, one drawable, both old buildings gone in-game. The seam and both collision holes are part of the job." },
+  { id: "world-edit", topic: "codewalker", name: "World edit basics", blurb: "The viewer, gizmos, a new ymap, extents and the manifest, then your crate in that yard. Gates and car parks are the Areas class." },
+  { id: "area-edit", topic: "areas", name: "Gates, compounds, open ground", blurb: "Move a vanilla gate, clear a lot, fence a compound, dress it, then a sliding gate the engine opens — not a building." },
 ];
 
-export const LESSONS: Lesson[] = [
+const CORE_LESSONS: Lesson[] = [
   // ── Blender interface ────────────────────────────────────────────────
   {
     id: 1,
@@ -1276,9 +1283,10 @@ export const LESSONS: Lesson[] = [
     clips: [
       { label: "Desertos: custom MLO in Blender (the long one)", start: 0, videoId: "NN-fjCbPO1Q" },
       { label: "RoyalT: model, export, test interior", start: 0, videoId: "s91lzkS8rKY" },
+      { label: "NugzZ part 1 (optional — vanilla shop, steal keys only)", start: 0, videoId: "_gNtiS_tECQ" },
     ],
     videoId: "",
-    videoNote: "Slow: Desertos at 0.75×, pause after every key — he names them. Fast: RoyalT model/export. Both still make YOUR room, not icing and not MRPD.",
+    videoNote: "Slow: Desertos at 0.75×, pause after every key — he names them. Fast: RoyalT model/export. NugzZ is optional extra. Still YOUR room, not a converted GTA interior.",
     tips: [
       {
         text: "Detach the interior from the exterior. They are separate assets that agree at one doorway.",
@@ -1289,6 +1297,11 @@ export const LESSONS: Lesson[] = [
         text: "Cfx Part 3: Color 1, Face Corner, Byte Color — green inside when you paint later, not today.",
         source: "Cfx Part 3",
         url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-3/",
+      },
+      {
+        text: "NugzZ beginner MLO part 1 is optional company. He starts from a vanilla shop. Steal keys, not the Rockstar mesh.",
+        source: "NugzZ",
+        url: "https://www.youtube.com/watch?v=_gNtiS_tECQ",
       },
     ],
     checklist: [
@@ -1789,21 +1802,24 @@ export const LESSONS: Lesson[] = [
   },
 ];
 
+export const LESSONS: Lesson[] = [...CORE_LESSONS, ...EXTRA_LESSONS];
 export const getLesson = (id: number) => LESSONS.find((l) => l.id === id);
 export const getClass = (id: string) => CLASSES.find((c) => c.id === id);
 export const getTopic = (id: string) => TOPICS.find((t) => t.id === id);
 export const topicPath = (topic: Topic) => topic.hub ?? `/topics/${topic.id}`;
 
-/** Catalogue order: CLASSES sequence, then lesson id inside a class. */
+const classKey = (lesson: Lesson) => lesson.sort ?? lesson.id * 10;
+
+/** Catalogue order: CLASSES sequence, then sort/id inside a class. */
 export const lessonsInPathOrder = () => {
   const classOrder = CLASSES.map((c) => c.id);
   return [...LESSONS].sort(
-    (a, b) => classOrder.indexOf(a.classId) - classOrder.indexOf(b.classId) || a.id - b.id,
+    (a, b) => classOrder.indexOf(a.classId) - classOrder.indexOf(b.classId) || classKey(a) - classKey(b),
   );
 };
 
 export const lessonsOfClass = (classId: string) =>
-  LESSONS.filter((l) => l.classId === classId).sort((a, b) => a.id - b.id);
+  LESSONS.filter((l) => l.classId === classId).sort((a, b) => classKey(a) - classKey(b));
 export const classesOfTopic = (topic: TopicId) => CLASSES.filter((c) => c.topic === topic);
 export const lessonsOfTopic = (topic: TopicId) =>
   lessonsInPathOrder().filter((l) => getClass(l.classId)?.topic === topic);

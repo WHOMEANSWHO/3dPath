@@ -78,9 +78,8 @@ links to other people’s videos; it does not ship those videos in the exe.
 
 Everything lives in `src/data/`:
 
-- `catalogue.ts` — topics, classes, and all 39 lessons
+- `catalogue.ts` — topics, classes, and all 59 lessons
 - `pace.ts` — Slow / Fast video packs and clip timestamps
-- `monthTrack.ts` — the September 2026 Tue/Thu/Fri playlist
 - `reference.ts` — the formats glossary and field notes
 
 ## License

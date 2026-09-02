@@ -557,6 +557,201 @@ const READING: Record<number, DocLink[]> = {
       url: "https://docs.sollumz.org/tutorials/creating-static-meshes",
     },
   ],
+  40: [
+    {
+      title: "Add / delete objects",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/duplicate.html",
+    },
+    {
+      title: "Object origins and the 3D cursor",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/object/origin.html",
+    },
+  ],
+  41: [
+    {
+      title: "Duplicate",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/duplicate.html",
+    },
+    {
+      title: "Collections",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/collections/collections.html",
+    },
+  ],
+  42: [
+    {
+      title: "Face orientation overlay",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/editors/3dview/display/overlays.html",
+    },
+  ],
+  43: [
+    {
+      title: "Snapping",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/editors/3dview/controls/snapping.html",
+    },
+    {
+      title: "Transform basics",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/transform/basics.html",
+    },
+  ],
+  44: [
+    {
+      title: "Object shading (Flat / Smooth)",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/shading.html",
+    },
+    {
+      title: "Bevel",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/modeling/meshes/editing/edge/bevel.html",
+    },
+  ],
+  45: [
+    {
+      title: "Save and load",
+      source: "Blender manual",
+      url: "https://docs.blender.org/manual/en/latest/files/blend/save_load.html",
+    },
+  ],
+  46: [
+    {
+      title: "FAQ — invisible models, manifest, shaders",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/support/faq",
+    },
+    {
+      title: "Creating static meshes",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-static-meshes",
+    },
+    {
+      title: "Placing assets & map mods",
+      source: "Cfx Part 4",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
+    },
+  ],
+  47: [
+    {
+      title: "FAQ — glow at night, vertex colour",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/support/faq",
+    },
+    {
+      title: "Texturing & vertex colour",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-interiors/texturing",
+    },
+  ],
+  48: [
+    {
+      title: "Creating ytyp — limbo, rooms, portals",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-interiors/create-ytyp",
+    },
+  ],
+  49: [
+    {
+      title: "Creating ytyp — portals",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-interiors/create-ytyp",
+    },
+    {
+      title: "FAQ — glow at night",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/support/faq",
+    },
+  ],
+  50: [
+    {
+      title: "Creating ytyp — rooms and entities",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-interiors/create-ytyp",
+    },
+  ],
+  51: [
+    {
+      title: "Placing assets & creating simple map mods",
+      source: "Cfx Part 4",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
+    },
+  ],
+  52: [
+    {
+      title: "Collision editing",
+      source: "Cfx Part 5",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-5/",
+    },
+    {
+      title: "Creating static collisions",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-static-collisions",
+    },
+  ],
+  53: [
+    {
+      title: "Part 6 — LODs",
+      source: "Cfx Part 6",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-6/",
+    },
+  ],
+  54: [
+    {
+      title: "Creating static meshes",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/tutorials/creating-static-meshes",
+    },
+    {
+      title: "Creating GTAV assets in Blender",
+      source: "Cfx Part 3",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-3/",
+    },
+  ],
+  55: [
+    {
+      title: "Collision editing",
+      source: "Cfx Part 5",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-5/",
+    },
+  ],
+  56: [
+    {
+      title: "Placing assets & creating simple map mods",
+      source: "Cfx Part 4",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
+    },
+  ],
+  57: [
+    {
+      title: "Placing assets & creating simple map mods",
+      source: "Cfx Part 4",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
+    },
+    {
+      title: "FAQ — manifest",
+      source: "Sollumz docs",
+      url: "https://docs.sollumz.org/support/faq",
+    },
+  ],
+  58: [
+    {
+      title: "Placing assets & creating simple map mods",
+      source: "Cfx Part 4",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-4/",
+    },
+  ],
+  59: [
+    {
+      title: "Part 8 — Door creation (sliding gates)",
+      source: "Cfx Part 8",
+      url: "https://docs.fivem.net/docs/assets-manual/beginner-series/part-8/",
+    },
+  ],
 };
 
 export const OFFICIAL_SHELF: { heading: string; links: DocLink[] }[] = [
@@ -667,6 +862,16 @@ export const OFFICIAL_SHELF: { heading: string; links: DocLink[] }[] = [
         title: "Apply transforms",
         source: "Blender manual",
         url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/apply.html",
+      },
+      {
+        title: "Snapping",
+        source: "Blender manual",
+        url: "https://docs.blender.org/manual/en/latest/editors/3dview/controls/snapping.html",
+      },
+      {
+        title: "Duplicate",
+        source: "Blender manual",
+        url: "https://docs.blender.org/manual/en/latest/scene_layout/object/editing/duplicate.html",
       },
     ],
   },

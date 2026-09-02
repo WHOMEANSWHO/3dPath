@@ -29,15 +29,27 @@ const JOBS = [
   },
   {
     n: "04",
+    lessonId: 58,
+    label: "Dress the compound",
+    text: "Bollards, a light, a bin — outdoor clutter on YOUR lot, on the ground.",
+  },
+  {
+    n: "05",
     lessonId: 34,
     label: "Drive it — video off",
     text: "Same compound, no tutorial. If you needed the video, it is not yours yet.",
   },
   {
-    n: "05",
+    n: "06",
     lessonId: 39,
     label: "Sliding gate",
     text: "The engine slides it. Origin at the bottom corner, Sliding Door (8). Not a lock script.",
+  },
+  {
+    n: "07",
+    lessonId: 59,
+    label: "Sliding gate — video off",
+    text: "Same gate, no Part 8. If you needed the video, it is not yours yet.",
   },
 ] as const;
 
@@ -77,8 +89,8 @@ export default function Areas() {
           <Link to="/lessons/16" className="text-amber hover:underline">
             CodeWalker tour
           </Link>{" "}
-          first. A first new ymap (lesson 17) helps. A mesh that sits is lessons 31–34. A sliding gate the engine
-          opens is lesson 39. Lock scripts are not this school.
+          first. A first new ymap (lesson 17) helps. A mesh that sits is lessons 31–34; dressing that lot is 58. A
+          sliding gate the engine opens is lesson 39, then 59 with the video off. Lock scripts are not this school.
         </p>
       </aside>
 

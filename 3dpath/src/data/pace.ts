@@ -67,6 +67,9 @@ const fallback = (lesson: Lesson): PacePack => ({
  * gG_8NeiXKRE  RoyalT — remove props, occlusions, YMF
  * 9jPKQLiXSuA  RoyalT — MLO from scratch intro
  * -24PBSYT74w  Bumpy86 — simple prop collisions
+ * JSAobQPRLwc  Blender Fundamentals — Add & Delete
+ * _gNtiS_tECQ  NugzZ — Beginner FiveM MLO part 1 (optional extra)
+ * 3J6XXTW4b4w  NugzZ — Beginner FiveM MLO part 2 (optional extra)
  *
  * Grant Part 1 chapters (Class Central): download 53, interface 97, nav 127,
  * viewport 192, Shift+A 281, cursor 341, G 374, R/S 465, gizmos 499,
@@ -89,6 +92,10 @@ const CFX7 = "11EXhLYfJLs";
 const CFX8 = "ajqNHqB8mYw";
 const YMAP_EDIT = "VDoAjV3kv2g";
 const GATE_YMAP = "z3QwE87YtDk";
+const ADDDEL = "JSAobQPRLwc";
+const IFACE = "8XyIYRW_2xk";
+const NUGZ1 = "_gNtiS_tECQ";
+const NUGZ2 = "3J6XXTW4b4w";
 
 const PACKS: Record<number, Record<Pace, PacePack>> = {
   1: {
@@ -583,19 +590,21 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
     slow: {
       videoId: MLO,
       videoNote:
-        "Desertos — custom MLO in Blender at 0.75×. He names every key. Pause and copy onto YOUR site. Skip Discord. You are modelling new walls, not converting a GTA interior.",
+        "Desertos — custom MLO in Blender at 0.75×. He names every key. Pause and copy onto YOUR site. Skip Discord. You are modelling new walls, not converting a GTA interior. NugzZ is optional extra — he starts from a vanilla shop.",
       clips: [
         { label: "Desertos: custom interior from scratch", start: 0, videoId: MLO },
         { label: "RoyalT: model, export, test", start: 0, videoId: "s91lzkS8rKY" },
+        { label: "NugzZ part 1 (optional — vanilla shop, steal keys only)", start: 0, videoId: NUGZ1 },
       ],
       stepClips: [0, 0, 0, 0, 0],
     },
     fast: {
       videoId: "s91lzkS8rKY",
-      videoNote: "RoyalT model/export at 1×. Steal the pipeline; still make your own shell. Desertos is there if you need a key named.",
+      videoNote: "RoyalT model/export at 1×. Steal the pipeline; still make your own shell. NugzZ part 1 is optional extra.",
       clips: [
         { label: "RoyalT: model and test interior", start: 0, videoId: "s91lzkS8rKY" },
         { label: "Desertos (keys, if you stall)", start: 0, videoId: MLO },
+        { label: "NugzZ part 1 (optional)", start: 0, videoId: NUGZ1 },
       ],
       stepClips: [0, 0, 0, 0, 1],
     },
@@ -812,6 +821,328 @@ const PACKS: Record<number, Record<Pace, PacePack>> = {
         { label: "Cfx Part 7: map animation (extra)", start: 0, videoId: CFX7 },
       ],
       stepClips: [0, 0, 0, 0, 0, 1],
+    },
+  },
+  40: {
+    slow: {
+      videoId: ADDDEL,
+      videoNote: "Official Add & Delete at 0.75×, then Grant for [[Shift+A]] and the cursor. Pause after every spawn.",
+      clips: [
+        { label: "Add and delete (official)", start: 0, videoId: ADDDEL },
+        { label: "Grant: [[Shift+A]]", start: 281, videoId: GRANT5 },
+        { label: "Grant: 3D cursor", start: 341, videoId: GRANT5 },
+      ],
+      stepClips: [0, 2, 0, 2, 0],
+    },
+    fast: {
+      videoId: ADDDEL,
+      videoNote: "Add & Delete at 1×. Cursor to origin, spawn, delete, undo. Then stop.",
+      clips: [{ label: "Add and delete", start: 0, videoId: ADDDEL }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  41: {
+    slow: {
+      videoId: GRANT5,
+      videoNote: "Grant [[G]] at 0.75× for the typed 2 m duplicate. Official Interface Overview for the Outliner.",
+      clips: [
+        { label: "Grant: [[G]] and typed moves", start: 374, videoId: GRANT5 },
+        { label: "Interface / Outliner (official)", start: 0, videoId: IFACE },
+      ],
+      stepClips: [0, 0, 1, 1, 0],
+    },
+    fast: {
+      videoId: DONUT,
+      videoNote: "Donut add/grab at 1×, then five cubes with typed 2 m. No icing.",
+      clips: [
+        { label: "Adding objects", start: 362, videoId: DONUT },
+        { label: "Move [[G]]", start: 733, videoId: DONUT },
+      ],
+      stepClips: [0, 1, 1, 0, 1],
+    },
+  },
+  42: {
+    slow: {
+      videoId: "34FBeC9mktE",
+      videoNote: "Official Edit Mode, then Grant only to see faces. Face Orientation is in Overlays — pause and look.",
+      clips: [
+        { label: "Object and Edit Mode (official)", start: 0, videoId: "34FBeC9mktE" },
+        { label: "Grant: faces in edit mode", start: 0, videoId: "F_JK9eaYYTQ" },
+      ],
+      stepClips: [0, 1, 1, 1, 0],
+    },
+    fast: {
+      videoId: "34FBeC9mktE",
+      videoNote: "Edit Mode at 1×. Overlay on, flip the red face, stop.",
+      clips: [{ label: "Object and Edit Mode", start: 0, videoId: "34FBeC9mktE" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  43: {
+    slow: {
+      videoId: "hTL6AKR8YDs",
+      videoNote: "Official Select & Transform at 0.75×. Snap is the magnet in the header. Grant for typing 1.5.",
+      clips: [
+        { label: "Select & Transform (official)", start: 0, videoId: "hTL6AKR8YDs" },
+        { label: "Grant: typed numbers", start: 606, videoId: GRANT5 },
+      ],
+      stepClips: [0, 0, 1, 1, 1],
+    },
+    fast: {
+      videoId: GRANT5,
+      videoNote: "Typed numbers at 1×. Magnet on, grab on the grid, magnet off.",
+      clips: [{ label: "Typed numbers", start: 606, videoId: GRANT5 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  44: {
+    slow: {
+      videoId: "JSvGts95S7A",
+      videoNote: "Official bevel — why a flat crate still reads. Shade Flat is right-click. Starts at 0.75×.",
+      clips: [{ label: "Bevel tool (official)", start: 0, videoId: "JSvGts95S7A" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+    fast: {
+      videoId: "JSvGts95S7A",
+      videoNote: "Bevel at 1×. Shade Flat. No Subdivision Surface.",
+      clips: [{ label: "Bevel", start: 0, videoId: "JSvGts95S7A" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  45: {
+    slow: {
+      videoId: "",
+      videoNote: "No video on Slow. File → Save As, confirm the window title, reopen the crate file. Official reading is Save/Load.",
+      clips: [],
+    },
+    fast: {
+      videoId: DONUT,
+      videoNote: "Donut save at 1× if you want a picture of File → Save. Two files on disk is still the gate. No icing.",
+      clips: [{ label: "Save the file", start: 1631, videoId: DONUT }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  46: {
+    slow: {
+      videoId: MLO,
+      videoNote: "Desertos if the export is wrong. Cfx Part 4 if the folder is wrong. FAQ is the list. 0.75×.",
+      clips: [
+        { label: "Convert / export (skip rooms)", start: 0, videoId: MLO },
+        { label: "Cfx Part 4: stream and manifest", start: 0, videoId: CFX4 },
+      ],
+      stepClips: [0, 1, 1, 1, 1],
+    },
+    fast: {
+      videoId: CFX4,
+      videoNote: "Part 4 at 1× for manifest and stream. FAQ first if CodeWalker is already empty.",
+      clips: [{ label: "Cfx Part 4: stream", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  47: {
+    slow: {
+      videoId: "hBH1vZY8rWc",
+      videoNote: "Vertex colour FAQ video at 0.75×. Today is RED outdoors, low values, not 255.",
+      clips: [{ label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+    fast: {
+      videoId: "hBH1vZY8rWc",
+      videoNote: "Same paint video at 1×. Midnight check is the lesson.",
+      clips: [{ label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  48: {
+    slow: {
+      videoId: MLO,
+      videoNote: "Desertos at 0.75× — stay on rooms and portals. You add the second room; he is company.",
+      clips: [
+        { label: "Sollumz MLO (rooms and portals)", start: 0, videoId: MLO },
+        { label: "Older UI portals", start: 0, videoId: "fgCK5FRsZMM" },
+      ],
+      stepClips: [0, 0, 0, 1, 0],
+    },
+    fast: {
+      videoId: "fgCK5FRsZMM",
+      videoNote: "Older UI at 1× for portal from/to. Then match current Sollumz.",
+      clips: [{ label: "Portals (older tutorial)", start: 0, videoId: "fgCK5FRsZMM" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  49: {
+    slow: {
+      videoId: "hBH1vZY8rWc",
+      videoNote: "Scrub the bit that matches the symptom. One change per export. 0.75×.",
+      clips: [
+        { label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" },
+        { label: "Lights / portals (older UI, 55:42)", start: 3342, videoId: "fgCK5FRsZMM" },
+      ],
+      stepClips: [1, 1, 0, 1, 1],
+    },
+    fast: {
+      videoId: "hBH1vZY8rWc",
+      videoNote: "One symptom, one clip, one export.",
+      clips: [{ label: "Vertex colour", start: 0, videoId: "hBH1vZY8rWc" }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  50: {
+    slow: {
+      videoId: MLO,
+      videoNote: "Desertos at 0.75× if a room-entity click is unclear. Two objects, then stop. NugzZ part 2 is optional extra for frames and dirt.",
+      clips: [
+        { label: "Desertos: custom interior", start: 0, videoId: MLO },
+        { label: "RoyalT: test interior", start: 0, videoId: "s91lzkS8rKY" },
+        { label: "NugzZ part 2 (optional — props, frames, dirt)", start: 0, videoId: NUGZ2 },
+      ],
+      stepClips: [0, 0, 0, 1, 1],
+    },
+    fast: {
+      videoId: "s91lzkS8rKY",
+      videoNote: "RoyalT test-interior at 1×. Two entities in room 1. NugzZ part 2 is optional extra.",
+      clips: [
+        { label: "RoyalT: test interior", start: 0, videoId: "s91lzkS8rKY" },
+        { label: "NugzZ part 2 (optional)", start: 0, videoId: NUGZ2 },
+      ],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  51: {
+    slow: {
+      videoId: "",
+      videoNote: "No video. The doorway is the teacher. One peek at lesson 30 if you are stuck, then close it.",
+      clips: [],
+    },
+    fast: {
+      videoId: "",
+      videoNote: "No video on Fast either.",
+      clips: [],
+    },
+  },
+  52: {
+    slow: {
+      videoId: CFX5,
+      videoNote: "Official Part 5 at 0.75×. The crate collision was the drill; this is the building.",
+      clips: [
+        { label: "Cfx Part 5: collision (official)", start: 0, videoId: CFX5 },
+        { label: "Simple prop collisions", start: 0, videoId: "-24PBSYT74w" },
+      ],
+      stepClips: [0, 1, 1, 0, 0],
+    },
+    fast: {
+      videoId: CFX5,
+      videoNote: "Part 5 at 1×. Doorway hole in the bound, walk the perimeter.",
+      clips: [{ label: "Cfx Part 5: collision", start: 0, videoId: CFX5 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  53: {
+    slow: {
+      videoId: CFX6,
+      videoNote: "Official Part 6 at 0.75×, then drive. Pause on parent fields.",
+      clips: [{ label: "Cfx Part 6: LODs (official)", start: 0, videoId: CFX6 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+    fast: {
+      videoId: CFX6,
+      videoNote: "Part 6 at 1×. Drive away. Write the swap distance.",
+      clips: [{ label: "Cfx Part 6: LODs", start: 0, videoId: CFX6 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  54: {
+    slow: {
+      videoId: CFX3,
+      videoNote: "Part 3 at 0.75× if you convert again. Grant for the connecting box. Judge from 50 m.",
+      clips: [
+        { label: "Cfx Part 3: drawable (official)", start: 0, videoId: CFX3 },
+        { label: "Grant: blocking from a cube", start: 0, videoId: "F_JK9eaYYTQ" },
+      ],
+      stepClips: [1, 1, 0, 0, 0],
+    },
+    fast: {
+      videoId: CFX3,
+      videoNote: "Part 3 at 1×. Scale the connector. Same archetype name.",
+      clips: [{ label: "Cfx Part 3: convert to drawable", start: 0, videoId: CFX3 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  55: {
+    slow: {
+      videoId: CFX5,
+      videoNote: "Part 5 at 0.75× for both footprints. Original ybn filenames.",
+      clips: [
+        { label: "Cfx Part 5: world collision (official)", start: 0, videoId: CFX5 },
+        { label: "RoyalT: fill ground and collision", start: 0, videoId: "na_62B-OxGs" },
+      ],
+      stepClips: [0, 0, 0, 1, 1],
+    },
+    fast: {
+      videoId: CFX5,
+      videoNote: "Part 5 at 1×. Walk both old shops and the join.",
+      clips: [{ label: "Cfx Part 5: collision hole", start: 0, videoId: CFX5 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  56: {
+    slow: {
+      videoId: CFX4,
+      videoNote: "Cfx Part 4 at 0.75× — Shift-drag to duplicate. [[T]] [[W]] [[E]]. Do not overwrite the city.",
+      clips: [
+        { label: "Cfx Part 4: place entities (official)", start: 0, videoId: CFX4 },
+        { label: "RIB SOSAY: add a prop", start: 0, videoId: CW },
+      ],
+      stepClips: [0, 0, 1, 1, 0],
+    },
+    fast: {
+      videoId: CFX4,
+      videoNote: "Part 4 at 1×. T, W, E, Shift-drag. Typed Z.",
+      clips: [{ label: "Cfx Part 4: place", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  57: {
+    slow: {
+      videoId: CFX4,
+      videoNote: "Part 4 at 0.75×. Pause on Extents, Flags, Manifest Generator. Then do them on YOUR ymap.",
+      clips: [{ label: "Cfx Part 4: ymap and resource (official)", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+    fast: {
+      videoId: CFX4,
+      videoNote: "Part 4 at 1×. Generate the manifest from this project, not a copy.",
+      clips: [{ label: "Cfx Part 4: manifest", start: 0, videoId: CFX4 }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  58: {
+    slow: {
+      videoId: GATE_YMAP,
+      videoNote: "Twisle at 0.75× for placing. You dress YOUR lot. Cfx Part 4 if extents were forgotten.",
+      clips: [
+        { label: "Twisle: custom ymap", start: 0, videoId: GATE_YMAP },
+        { label: "RIB SOSAY: add a prop", start: 0, videoId: CW },
+      ],
+      stepClips: [1, 0, 1, 1, 1],
+    },
+    fast: {
+      videoId: GATE_YMAP,
+      videoNote: "Twisle at 1×. A handful of outdoor props. Night check for the light.",
+      clips: [{ label: "Twisle: place props", start: 0, videoId: GATE_YMAP }],
+      stepClips: [0, 0, 0, 0, 0],
+    },
+  },
+  59: {
+    slow: {
+      videoId: "",
+      videoNote: "No video. One peek at lesson 39's steps if you are stuck, then close them.",
+      clips: [],
+    },
+    fast: {
+      videoId: "",
+      videoNote: "No video on Fast either. The engine still has to slide it.",
+      clips: [],
     },
   },
 };
